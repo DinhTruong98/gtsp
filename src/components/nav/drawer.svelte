@@ -10,28 +10,13 @@
 	}
 </script>
 
-<transition
-	enter-class="opacity-0"
-	enter-active-class="ease-out transition-medium"
-	enter-to-class="opacity-100"
-	leave-class="opacity-100"
-	leave-active-class="ease-out transition-medium"
-	leave-to-class="opacity-0"
->
-	<div hidden={!isOpen} class="z-10 fixed inset-0 transition-opacity">
-		<div on:click={closeDrawer} class="absolute inset-0 bg-black opacity-50" tabindex="0" />
-	</div>
-</transition>
+
 <aside
-	class="transform top-0 right-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 + {isOpen
+	class="transform top-[68px] right-0 w-full bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 + {isOpen
 		? 'translate-x-0'
 		: 'translate-x-full'}"
 >
-	<span on:click={closeDrawer} class="flex w-full items-center p-4 border-b">
-		<img src="logo2.png" alt="Logo" class="h-auto w-[240px] " />
-	</span>
 	<a href="/">
-
 	<span on:click={closeDrawer} class="flex items-center p-4 hover:bg-indigo-500 hover:text-white ">
 		<span class="mr-2">
 			<svg

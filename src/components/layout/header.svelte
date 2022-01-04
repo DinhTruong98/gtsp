@@ -6,6 +6,7 @@
     let isOpen = false;
     $: innerWidth = 0;
     $: isMobile = innerWidth < 768;
+    $: scrollable = !isOpen;
 
     function drawer() {
         console.log('drawer');
@@ -17,33 +18,47 @@
             if (e.keyCode === 27 && isOpen) isOpen = false;
         });
     });
+
+    const wheel = (node, options) => {
+        let { scrollable } = options;
+
+        const handler = e => {
+            if (!scrollable) e.preventDefault();
+        };
+
+        node.addEventListener('wheel', handler, { passive: false });
+
+        return {
+            update(options) {
+                scrollable = options.scrollable;
+            },
+            destroy() {
+                node.removeEventListener('wheel', handler, { passive: false });
+            }
+        };
+    };
 </script>
 
-<svelte:window bind:innerWidth/>
+<svelte:window bind:innerWidth use:wheel={{scrollable}} />
 
 <nav class="sticky top-0 w-full items-center px-4 py-2 h-15 bg-white text-gray-700 border-b border-gray-200 z-10">
     <div class="flex items-center justify-between">
         <a href="/">
 
-        <img src="logo2.png"
-             alt="Logo"
-             class="h-auto w-[240px]"/>
+            <img src="logo2.png"
+                 alt="Logo"
+                 class="h-auto w-[240px]"/>
         </a>
-        <button hidden={!isMobile}
-                class="mr-2"
-                aria-label="Open Menu"
-                on:click={drawer}>
-            <svg fill="none"
-                 stroke="currentColor"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 stroke-width="2"
-                 viewBox="0 0 24 24"
-                 class="w-8 h-8">
-                <path d="M4 6h16M4 12h16M4 18h16">
-                </path>
-            </svg>
-        </button>
+        {#if isMobile}
+            <button on:click={drawer} class="hamburger hamburger--vertical {isOpen ? 'active' : ''} h-10 w-10" type="button">
+                <div class="inner">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </button>
+        {/if}
+
     </div>
-    <Drawer isOpen={isOpen} on:close={() =>{isOpen = false}} />
+    <Drawer isOpen={isOpen} on:close={() =>{isOpen = false}}/>
 </nav>

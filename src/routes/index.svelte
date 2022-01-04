@@ -7,7 +7,6 @@ import Button from "../components/ui/button.svelte";
     let loading = false;
     
     function increase() {
-        
         a++
     }
 
